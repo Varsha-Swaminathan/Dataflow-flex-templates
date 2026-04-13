@@ -1,0 +1,35 @@
+{
+  "name": "Normalize JSON to BigQuery",
+  "description": "Reads JSON data from GCS (line-delimited or single JSON array), normalizes name and age fields, tags records by age group, and writes the output to BigQuery.",
+  "parameters": [
+    {
+      "name": "input_gcs",
+      "label": "Input GCS Path",
+      "helpText": "GCS path to input JSON file(s). Supports wildcards, e.g. gs://bucket/path/*.json",
+      "paramType": "GCS_READ_FILE",
+      "isOptional": false
+    },
+    {
+      "name": "bq_table",
+      "label": "BigQuery Table",
+      "helpText": "Target BigQuery table in the format: project:dataset.table",
+      "paramType": "BIGQUERY_TABLE",
+      "isOptional": false
+    },
+    {
+      "name": "temp_location",
+      "label": "Temporary GCS Location",
+      "helpText": "GCS path used for temporary files during BigQuery load operations",
+      "paramType": "GCS_WRITE_FOLDER",
+      "isOptional": false
+    },
+    {
+      "name": "single_json_array",
+      "label": "Single JSON Array Input",
+      "helpText": "Set to true if the input file contains a single JSON array instead of line-delimited JSON",
+      "paramType": "BOOLEAN",
+      "isOptional": true,
+      "defaultValue": "false"
+    }
+  ]
+}

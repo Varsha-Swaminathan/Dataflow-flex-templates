@@ -1,0 +1,5 @@
+apache-beam[gcp]
+google-cloud-bigquery
+google-cloud-storage
+google-cloud-pubsub
+google-cloud-logging

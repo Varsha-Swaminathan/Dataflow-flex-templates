@@ -1,0 +1,33 @@
+#### 
+python main.py --runner=DataflowRunner --project=your-gcp-project-id --region=us-central1 --temp_location=gs://your-bucket/temp --staging_location=gs://your-bucket/staging
+
+
+"""
+Apache Beam pipeline for Dataflow (Flex Template / Dataflow Runner).
+Reads JSON data from GCS, processes it, and writes to BigQuery.
+
+ 
+Assumptions:
+- Input files are either NDJSON (one JSON object per line) or a single JSON array file.
+- Each record contains at least: first_name, last_name, age (int).
+
+
+Processing:
+- Adds `name` field ("<first_name> <last_name>").
+- Adds `age_tag` with values: 'minor' (<18), 'adult' (18-60), 'senior' (>60).
+- Adds `ingestion_time` ISO timestamp.
+
+
+BigQuery:
+- Uses WriteToBigQuery with FILE_LOADS (default) for better throughput in Dataflow.
+
+
+Usage example (local):
+python main.py \
+--runner=DirectRunner \
+--input_gcs=gs://my-bucket/path/to/*.ndjson \
+--bq_table=my-project:dataset.table
+
+
+For Dataflow (Flex Template) pass Dataflow runner options and build a flex template container.
+"""

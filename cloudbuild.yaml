@@ -1,0 +1,39 @@
+steps:
+  # Step 1: Build the Flex Template Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+      - .
+
+  # Step 2: Push image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+
+  # Step 3: Create Flex Template spec in GCS
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud dataflow flex-template build \
+          gs://${_BUCKET}/${_TEMPLATE_NAME}.json \
+          --image "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE_NAME}:$SHORT_SHA" \
+          --sdk-language PYTHON \
+          --metadata-file metadata.json
+
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+
+substitutions:
+  _REGION: asia-south2
+  _REPO: dataflow-templates
+  _IMAGE_NAME: python-flex-pipeline
+  _BUCKET: my-dataflow-templates-bucket
+  _TEMPLATE_NAME: python-flex-pipeline
+
+options:
+  logging: CLOUD_LOGGING_ONLY

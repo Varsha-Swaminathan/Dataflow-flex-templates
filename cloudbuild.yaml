@@ -30,9 +30,9 @@ images:
 
 substitutions:
   _REGION: asia-south2
-  _REPO: dataflow-templates
+  _REPO: dataflow-repo
   _IMAGE_NAME: python-flex-pipeline
-  _BUCKET: my-dataflow-templates-bucket
+  _BUCKET: my-dataflow-templates-bucket1
   _TEMPLATE_NAME: python-flex-pipeline
 
 options:
